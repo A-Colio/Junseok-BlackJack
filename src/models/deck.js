@@ -41,8 +41,8 @@ suits.forEach((suit) => {
     });
 });
 
-// 덱을 재섞을 임계값 설정 (카드의 75%가 남았을 때 재섞기)
-const RESHUFFLE_THRESHOLD = 78;
+// 덱을 재섞을 임계값 설정 (카드의 75%를 사용 했을 때 재섞기)
+const RESHUFFLE_THRESHOLD = 77; // 근데 나누는 로직 만들기 애매해서 직접 계산기 두들겨 봤는데 312장중 15%는 76.8장이라 
 
 // 덱 클래스 정의
 class Deck {
@@ -62,7 +62,7 @@ class Deck {
         }
     }
 
-    // 카드 섞기 (Fisher-Yates 셔플)
+    // 카드 섞기 (Fisher-Yates 셔플)  스크랩
     shuffle() {
         for (let i = this.deck.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -70,13 +70,15 @@ class Deck {
         }
     }
 
-    // 카드 뽑기. 임계값 도달 시 덱 다시 만들기
+    // 카드 뽑기 + 75% 이상 사용시 도달 시 덱 다시 만들기
     drawCard() {
         if (this.deck.length <= RESHUFFLE_THRESHOLD) {
-            console.log("카드를 75% 이상 사용하셨습니다, 덱을 새로 섞습니다.");
+            console.log(`카드를 75% 이상 사용하셨습니다, 덱을 새로 섞습니다.`);
             this.refreshDeck();
         }
-        return this.deck.pop();
+        return this.deck.shift(); //pop대신 shift를 써서 카드 맨 앞장을 사용
+        // 생각해보니 맨 앞장을 쓰면 덱이 위로 곂곂이 쌓이는데
+        // 맨 아래가 앞이면 밑장빼기인데..?
     }
 
     // 덱 초기화 및 재섞기
