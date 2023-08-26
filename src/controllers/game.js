@@ -133,7 +133,7 @@ class Game {
 
         // 에이스 카드를 1 또는 11로 사용할 수 있으므로, 
         // 총합이 21을 초과하면 에이스를 1로 처리합니다.
-        while (total > 21 && aces > 0) {
+        if (total > 21 && aces > 0) {
             total -= 10;
             aces -= 1;
         }
