@@ -58,7 +58,7 @@ class Game {
     
         // 제대로 된 답할 때까지 반복 질문.
         while (answer !== 'y' && answer !== 'n') {
-            console.log("잘못된 입력입니다. 다시 입력해주세요.");
+            console.log(`잘못된 입력입니다. 다시 입력해주세요.`);
             answer = await askQuestion('카드를 더 받으시겠습니까? (y/n): ');
         }
     
@@ -89,31 +89,31 @@ class Game {
         
             // 게임 결과를 계산하고 출력합니다.
             if (this.getTotalValue(this.dealerCards) > 21) {
-                console.log("딜러버스트! 게임 종료. \n플레이어 승리.");
+                console.log(`딜러버스트! 게임 종료. \n플레이어 승리.`);
             } else if (this.getTotalValue(this.dealerCards) > this.getTotalValue(this.playerCards)) {
-                console.log("게임 종료. 딜러 승리.");
+                console.log(`게임 종료. 딜러 승리.`);
             } else if (this.getTotalValue(this.dealerCards) < this.getTotalValue(this.playerCards)) {
-                console.log("게임 종료. \n플레이어 승리.");
+                console.log(`게임 종료. \n플레이어 승리.`);
             } else {
-                console.log("무승부");
+                console.log(`무승부`);
             }
         }
         isPlayerBurst = 0;
     
         // 게임을 계속할지 질문
-        let continueGame = await askQuestion('게임을 계속 하시겠습니까? (y/n): ');
+        let continueGame = await askQuestion(`게임을 계속 하시겠습니까? (y/n): `);
     
         // 답할 때까지 반복 질문
         while (continueGame !== 'y' && continueGame !== 'n') {
-            console.log("잘못된 입력입니다. 다시 입력해주세요.");
-            continueGame = await askQuestion('게임을 계속 하시겠습니까? (y/n): ');
+            console.log(`잘못된 입력입니다. 다시 입력해주세요.`);
+            continueGame = await askQuestion(`게임을 계속 하시겠습니까? (y/n): `);
         }
     
         // y를 선택하면 게임을 계속합니다.
         if (continueGame === 'y') {
             await this.gameStart(); 
         } else {
-            console.log("게임을 종료합니다. 감사합니다.");
+            console.log(`게임을 종료합니다. 감사합니다.`);
             rl.close();  // 입력 스트림 닫기
         }
     }

@@ -5,7 +5,7 @@ let playerWallet = INITIAL_MONEY;
 function checkAndReserWallet() {
   if (playerWallet <= 0) {
     playerWallet = INITIAL_MONEY;
-    console.log("자금이 지급되었습니다.");
+    console.log(`자금이 지급되었습니다.`);
   }
 }
 
@@ -25,7 +25,7 @@ function addMoney(amount) {
 function subtractMoney(amount) {
   // 베팅금액보다 보유금액이 없을때 돈을 넣지 않고 게임 시작
   if (playerWallet < amount) { 
-    console.log('InsufficienerWallet for this bet. Game will proceed without betting.');
+    console.log(`잔액이 부족합니다. 베팅 없이 진행됩니다`);
     return playerWallet; // 잔액 변화 없이 현재 잔액 반환
   }
 
