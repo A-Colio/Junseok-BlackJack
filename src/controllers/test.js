@@ -36,15 +36,13 @@ class Game {
         this.dealerCards = [];         //   딜러  카드를 저장할 배열
     }
 
-    // y/n 질문을 많이해서 질문의 값을가져오고 확인하는걸 함수화 함
-    // async는 await을 사용하려고 할때 비동기 함수로 구현 되어야 한다고 해서 코드틑 수정함
-    async needMore(question) {
-        let choice = await askQuestion(question);
-        while (choice !== 'y' && choice !== 'n') {
+    async needMore() {
+        let answer = await askQuestion('카드를 더 받으시겠습니까? (y/n): ');
+        while (answer !== 'y' && answer !== 'n') {
             console.log(`잘못된 입력입니다. 다시 입력해주세요.`);
-            choice = await askQuestion(question);
+            answer = await askQuestion('카드를 더 받으시겠습니까? (y/n): ');
         }
-        return choice;
+        return answer;
     }
     
 
@@ -55,10 +53,7 @@ class Game {
         // 현재 덱의 카드 수를 출력
         console.log(`현재 덱에는 ${this.deck.deck.length}장의 카드가 남아 있습니다.`);
     
-        //베팅 관련 로직 작성
-
-
-        // 플레이어와 딜러에게 2장의 카드를 나눠주기s
+        // 플레이어와 딜러에게 2장의 카드를 나눠주기
         this.playerCards = [this.deck.drawCard(), this.deck.drawCard()];
         this.dealerCards = [this.deck.drawCard(), this.deck.drawCard()];
 
@@ -72,23 +67,21 @@ class Game {
     
         // 카드를 더 받을지 질문 
         // 이 부분 함수화 가능 할 지도..?
-        let moreCard = await this.needMore(`카드를 더 받으시겠습니까? (y/n): `);
-
-    
+        let answer = await this.needMore();
         // 카드를 더 받고 싶은가
-        while (moreCard == 'y') {
+        while (answer == 'y') {
             this.playerCards.push(this.deck.drawCard());
             console.log(`플레이어의 카드: ${getCardNames(this.playerCards)}`);
             console.log(`카드의 합: ${this.getTotalValue(this.playerCards)}`);
     
             // 플레이어의 카드 합이 21을 초과하면 게임 종료
             if (this.getTotalValue(this.playerCards) > 21) {
-                console.log("버스트! 게임 종료. \n딜러 승리.");
+                console.log("버스트! 딜러의 패를 공개 합니다.");
                 isPlayerBurst++;
-                break;
+                breaks;
             }
-            // 이 부분은 많이 사용한 코드라 함수화 함
-            moreCard = await this.needMore(`카드를 더 받으시겠습니까? (y/n): `);
+            // 이 부분 함수화 가능 할 지도?
+            answer = await this.needMore();
         }
         
         // 플레이어가 버스트 확인 하고 안했으면 게임 정상 작동
@@ -114,7 +107,13 @@ class Game {
         isPlayerBurst = 0;
     
         // 게임을 계속할지 질문
-        let continueGame = await this.needMore(`게임을 계속 하시겠습니까? (y/n): `);
+        let continueGame = await askQuestion(`게임을 계속 하시겠습니까? (y/n): `);
+    
+        // 답할 때까지 반복 질문
+        while (continueGame !== 'y' && continueGame !== 'n') {
+            console.log(`잘못된 입력입니다. 다시 입력해주세요.`);
+            continueGame = await askQuestion(`게임을 계속 하시겠습니까? (y/n): `);
+        }
     
         // y를 선택하면 게임을 계속합니다.
         if (continueGame === 'y') {
